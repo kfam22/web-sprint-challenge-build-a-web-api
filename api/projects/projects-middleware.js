@@ -4,6 +4,7 @@
 // 3. validate post
 
 const Project = require('./projects-model');
+const yup = require('yup');
 
 function logger(req, res, next) {
     const time = new Date().toLocaleString()
@@ -29,4 +30,40 @@ function logger(req, res, next) {
     }
   }
 
-  module.exports = { logger, validateProjectId }
+  const projectSchema = yup.object({    
+      //   project needs a name and description
+      name: yup.string().trim().required(),
+      description: yup.string().trim().required(),
+  })
+
+  async function validateProject(req, res, next){
+    try {
+        const validated = await projectSchema.validate(req.body);
+        console.log('validation...', validated);
+        req.body = validated;
+        next()
+    }
+    catch(err){
+        next({
+            status: 400,
+            message: err.message
+        });
+    }
+  }
+
+  module.exports = { logger, validateProjectId, validateProject }
+
+//   const messageSchema = yup.object({
+//     sender: yup.string().trim().min(3).required(),
+//     text: yup.string().trim().min(3).required(),
+// })
+
+// const checkMessagePayload = async (req, res, next) => {
+//     try {
+//         const validated = await messageSchema.validate(req.body)
+//         req.body = validated
+//         next()
+//     } catch(err) {
+//         next(err)
+//     }
+// }
