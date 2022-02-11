@@ -34,6 +34,7 @@ function logger(req, res, next) {
       //   project needs a name and description
       name: yup.string().trim().required(),
       description: yup.string().trim().required(),
+      completed: yup.bool().required()
   })
 
   async function validateProject(req, res, next){
