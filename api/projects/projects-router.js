@@ -1,6 +1,6 @@
 // Write your "projects" router here!
 const express = require('express');
-const { validateProjectId, validateProject } = require('./projects-middleware');
+const { validateProjectId, validateProjectPost, validateProjectUpdate } = require('./projects-middleware');
 const Project = require('./projects-model');
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.get('/:id', validateProjectId, (req,res) => {
     res.json(req.project);
 })
 
-router.post('/', validateProject, (req,res,next) => {
+router.post('/', validateProjectPost, (req,res,next) => {
     console.log(`post request with payload:${req.body} to api/projects`);
     Project.insert(req.body)
     .then(project => {
@@ -30,7 +30,7 @@ router.post('/', validateProject, (req,res,next) => {
     })
 })
 
-router.put('/:id', validateProjectId, validateProject, (req,res,next) => {
+router.put('/:id', validateProjectId, validateProjectUpdate, (req,res,next) => {
     console.log(`put request with payload:${req.body} to: api/projects/id:${req.params.id}`);
     Project.update(req.params.id, req.body)
     .then(project => {
@@ -60,12 +60,12 @@ router.get('/:id/actions', validateProjectId, (req,res,next) => {
     })
 })
 
-router.use((err, req, res, next) => {
-    res.status(err.status || 500).json({
-      custom: "something went wrong",
-      message: err.message,
-      stack: err.stack
-    })
-  })
+// router.use((err, req, res, next) => {
+//     res.status(err.status || 500).json({
+//       custom: "something went wrong",
+//       message: err.message,
+//       stack: err.stack
+//     })
+//   })
 
 module.exports = router

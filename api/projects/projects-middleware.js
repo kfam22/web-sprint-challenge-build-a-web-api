@@ -1,8 +1,3 @@
-// add middlewares here related to projects
-// 1. logger
-// 2. validate id
-// 3. validate post
-
 const Project = require('./projects-model');
 const yup = require('yup');
 
@@ -13,16 +8,12 @@ function logger(req, res, next) {
   };
 
   async function validateProjectId(req, res, next){
-    //   console.log('validateProjectIdMiddleware');     
-    // If there is no project with the given `id` it responds with a status code 404.
     try{
         const project = await Project.get(req.params.id)
         if(!project){
-            console.log('id validation: failed');
             res.status(404).json({ message: "project not found"})
         } else {
             req.project = project;
-            console.log('id validation: success');
             next();
         }
     }catch(err){
@@ -30,17 +21,14 @@ function logger(req, res, next) {
     }
   }
 
-  const projectSchema = yup.object({    
-      //   project needs a name and description
+  const postProjectSchema = yup.object({    
       name: yup.string().trim().required(),
       description: yup.string().trim().required(),
-      completed: yup.bool().required()
   })
 
-  async function validateProject(req, res, next){
+  async function validateProjectPost(req, res, next){
     try {
-        const validated = await projectSchema.validate(req.body);
-        console.log('validation...', validated);
+        const validated = await postProjectSchema.validate(req.body);
         req.body = validated;
         next()
     }
@@ -52,19 +40,24 @@ function logger(req, res, next) {
     }
   }
 
-  module.exports = { logger, validateProjectId, validateProject }
+  const updateProjectSchema = yup.object({    
+    name: yup.string().trim().required(),
+    description: yup.string().trim().required(),
+    completed: yup.bool().required()
+})
 
-//   const messageSchema = yup.object({
-//     sender: yup.string().trim().min(3).required(),
-//     text: yup.string().trim().min(3).required(),
-// })
+async function validateProjectUpdate(req, res, next){
+  try {
+      const validated = await updateProjectSchema.validate(req.body);
+      req.body = validated;
+      next()
+  }
+  catch(err){
+      next({
+          status: 400,
+          message: err.message
+      });
+  }
+}
 
-// const checkMessagePayload = async (req, res, next) => {
-//     try {
-//         const validated = await messageSchema.validate(req.body)
-//         req.body = validated
-//         next()
-//     } catch(err) {
-//         next(err)
-//     }
-// }
+  module.exports = { logger, validateProjectId, validateProjectPost, validateProjectUpdate }
