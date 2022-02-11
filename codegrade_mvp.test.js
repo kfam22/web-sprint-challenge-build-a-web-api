@@ -18,6 +18,7 @@ const actionB = {
   project_id: 1, description: 'u', notes: 'v', completed: true,
 }
 const actions = [actionA, actionB]
+jest.setTimeout(1000)
 
 beforeAll(async () => {
   await db.migrate.latest()

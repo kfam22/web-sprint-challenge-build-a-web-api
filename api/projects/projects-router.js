@@ -39,21 +39,25 @@ router.put('/:id', validateProjectId, validateProject, (req,res,next) => {
     .catch(err => {
         next(err)
     })
-    // Returns the updated project as the body of the response.
-    // If there is no project with the given `id` it responds with a status code 404.
-    // If the request body is missing any of the required fields it responds with a status code 400.
 })
 
 router.delete('/:id', validateProjectId, (req,res,next) => {
     console.log(`delete request id:${req.params.id} to api/projects`);
-    // Returns no response body.
-    // If there is no project with the given `id` it responds with a status code 404.
+    Project.remove(req.params.id)
+    .then(()=> {
+        res.status(200).json({ message: `project id:${req.params.id} has been deleted` })
+    })
+    .catch(err => {
+        next(err)
+    })
 })
 
 router.get('/:id/actions', validateProjectId, (req,res,next) => {
     console.log(`get request to api/projects/${req.params.id}/actions`);
-    // Returns an array of actions (could be empty) belonging to a project with the given `id`.
-    // If there is no project with the given `id` it responds with a status code 404.
+    Project.getProjectActions(req.params.id)
+    .then(actions => {
+        res.status(200).json(actions)
+    })
 })
 
 router.use((err, req, res, next) => {
