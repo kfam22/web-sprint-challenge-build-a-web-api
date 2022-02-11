@@ -10,7 +10,7 @@ server.use('/api/projects', projectsRouter);
 server.use('/api/actions', actionsRouter);
 
 server.get('/', (req, res) => {
-    res.send(`<h2>Let's Go!!!!</h2>`);
+    res.send(`<h2>Don't worry, be happy!</h2>`);
   });
 
 // Configure your server here
