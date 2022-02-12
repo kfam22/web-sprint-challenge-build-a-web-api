@@ -148,10 +148,24 @@ Be prepared to demonstrate your understanding of this week's concepts by answeri
 
 1. The core features of Node.js and Express and why they are useful.
 
-1. Understand and explain the use of Middleware.
+- Node.js allows for server code to be written with Javascript which has access to the npm repository and is asynchronous allowing it to take full advantage of the processor it runs on.  It allows client and server to utilize the same programming language and minimizes context switching.
 
-1. The basic principles of the REST architectural style.
+-Express is a light-weight node module helps to abstract a lot of common tasks to provide simplicity. It also helps manage middleware, routing.
 
-1. Understand and explain the use of Express Routers.
+2. Understand and explain the use of Middleware.
 
-1. Describe tooling used to manually test the correctness of an API.
+Middleware are functions that execute during specific points in the lifecylcle of a request.   It has access to the request and response (req and res) for each route it's linked to, and can conclude the http request or pass it to another middleware function using the next method.
+
+3. The basic principles of the REST architectural style.
+
+REST stands for representational state transfer.  It uses HTTP to request access and use data. REST architecture separates the client and server and maintains statelessness, meaning, the server isn't concerned with the state of the client and vice versa.  The client and the server can communicate through requests sent from the client and responses sent from the server.  Client requests include a crud operation(create, read, update, delete) in the form of an HTTP verb Get(read), Post(create), Put(update), Delete(delete), a header, a path, and an optional message body containing data often in the form of JSON.
+
+4. Understand and explain the use of Express Routers.
+
+Routing refers to how different endpoints respond to client requests.  Routes can utilize dynamic parameters. Express routers are a type of middleware that help to organize express applications into smaller components based on their functions and can be composed together in the server.  
+
+5. Describe tooling used to manually test the correctness of an API.
+
+Error codes and and HTTP status codes can be used to test API responses.  The debugger can be used to track the flow of code as requests are mad and responses can be tested further with the use of third party testing tools like HTTPie, Postman, ThunderCat, Insomnia, and numerous others.
+
+

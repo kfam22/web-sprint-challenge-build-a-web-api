@@ -4,8 +4,8 @@ const yup = require('yup');
 function logger(req, res, next) {
     const time = new Date().toLocaleString()
     console.log(`[timestamp: ${time}] [method: ${req.method}] [url: ${req.url}]`)
-    next()
-  };
+    next();
+  }
 
   async function validateProjectId(req, res, next){
     try{
@@ -17,26 +17,26 @@ function logger(req, res, next) {
             next();
         }
     }catch(err){
-        next(err)
+        next(err);
     }
   }
 
   const postProjectSchema = yup.object({    
       name: yup.string().trim().required(),
       description: yup.string().trim().required(),
-  })
+  });
 
   async function validateProjectPost(req, res, next){
     try {
         const validated = await postProjectSchema.validate(req.body);
         req.body = validated;
-        next()
+        next();
     }
     catch(err){
         next({
             status: 400,
             message: err.message
-        });
+     });
     }
   }
 
@@ -44,20 +44,20 @@ function logger(req, res, next) {
     name: yup.string().trim().required(),
     description: yup.string().trim().required(),
     completed: yup.bool().required()
-})
+    });
 
-async function validateProjectUpdate(req, res, next){
-  try {
-      const validated = await updateProjectSchema.validate(req.body);
-      req.body = validated;
-      next()
-  }
-  catch(err){
-      next({
-          status: 400,
-          message: err.message
-      });
-  }
-}
+    async function validateProjectUpdate(req, res, next){
+    try {
+        const validated = await updateProjectSchema.validate(req.body);
+        req.body = validated;
+        next();
+    }
+    catch(err){
+        next({
+            status: 400,
+            message: err.message
+        });
+    }
+    }
 
-  module.exports = { logger, validateProjectId, validateProjectPost, validateProjectUpdate }
+  module.exports = { logger, validateProjectId, validateProjectPost, validateProjectUpdate };

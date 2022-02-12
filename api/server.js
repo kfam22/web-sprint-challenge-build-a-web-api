@@ -13,6 +13,10 @@ server.get('/', (req, res) => {
     res.send(`<h2>Don't worry, be happy!</h2>`);
   });
 
+  server.use('*', (req, res) => {
+    res.status(404).json({ message: `${req.method} ${req.baseUrl} not found!` });
+  });
+
   server.use((err, req, res, next) => {
     res.status(err.status || 500).json({
       custom: "something went wrong",
@@ -20,10 +24,5 @@ server.get('/', (req, res) => {
       stack: err.stack
     })
   })
-
-// Configure your server here
-// Build your actions router in /api/actions/actions-router.js
-// Build your projects router in /api/projects/projects-router.js
-// Do NOT `server.listen()` inside this file!
 
 module.exports = server;

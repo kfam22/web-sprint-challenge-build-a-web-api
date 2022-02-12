@@ -6,8 +6,6 @@ const Action = require('./actions-model');
 const yup = require('yup');
 
   async function validateActionId(req, res, next){
-    //   console.log('validateProjectIdMiddleware');     
-    // If there is no project with the given `id` it responds with a status code 404.
     try{
         const action = await Action.get(req.params.id)
         if(!action){
@@ -17,16 +15,15 @@ const yup = require('yup');
             next();
         }
     }catch(err){
-        next(err)
+        next(err);
     }
   }
 
   const postActionSchema = yup.object({    
-      //   project needs a name and description
       project_id: yup.number().required(),
       description: yup.string().trim().required(),
       notes: yup.string().trim().required(),
-  })
+  });
 
   async function validateActionPost(req, res, next){
     try {
@@ -48,7 +45,7 @@ const yup = require('yup');
     description: yup.string().trim().required(),
     notes: yup.string().trim().required(),
     completed: yup.bool().required()
-})
+});
 
 async function validateActionUpdate(req, res, next){
     try {
@@ -65,4 +62,4 @@ async function validateActionUpdate(req, res, next){
     }
   }
 
-  module.exports = { validateActionId, validateActionPost, validateActionUpdate }
+  module.exports = { validateActionId, validateActionPost, validateActionUpdate };
